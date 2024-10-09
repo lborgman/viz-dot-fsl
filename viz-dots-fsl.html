@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<body>
+    <base href=".">
+    <script src="./js/init-error.js"></script>
+
+    <h1>viz-dot-fsl.html</h1>
+    <div id="graph"></div>
+    <script type="module">
+        // @ts-check
+        const params = new URLSearchParams(window.location.search);
+        const parDots = params.get('dots');
+        const parFsl = params.get('fsl');
+
+        if (parDots && parFsl) throw Error("Both parameter dots and fsl given");
+        if (!parDots && !parFsl) throw Error("Either parameter dots or fsl must be given");
+
+        // https://github.com/oxc-project/oxc/issues/6369
+        const modJssmViz = await import("./js/jssm-viz.es6.js");
+        const modViz = await import("./js/viz-standalone.mjs");
+
+
+        let dots = parDots;
+        if (parFsl) {
+            dots = modJssmViz.fsl_to_dot(parFsl);
+        }
+
+        const instance = modViz.instance;
+        const viz = await instance();
+        const svg = viz.renderSVGElement(dots);
+
+        document.getElementById("graph").appendChild(svg);
+    </script>
+</body>
