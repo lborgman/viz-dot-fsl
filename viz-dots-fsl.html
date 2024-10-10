@@ -15,6 +15,8 @@
         if (parDots && parFsl) throw Error("Both parameter dots and fsl given");
         if (!parDots && !parFsl) throw Error("Either parameter dots or fsl must be given");
 
+        if (parFsl) { console.log("parFSL", parFsl ); }
+
         // https://github.com/oxc-project/oxc/issues/6369
         const modJssmViz = await import("./js/jssm-viz.es6.js");
         const modViz = await import("./js/viz-standalone.mjs");
